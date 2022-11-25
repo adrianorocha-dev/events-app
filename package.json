@@ -1,0 +1,6 @@
+{
+  "private": true,
+  "name": "mb-event-emitter",
+  "version": "1.0.0",
+  "workspaces": ["api", "mobile"]
+}
