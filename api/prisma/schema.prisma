@@ -1,0 +1,86 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserType {
+  PARTICIPANT
+  INSTITUTION
+}
+
+model User {
+  id       String   @id @default(cuid())
+  email    String   @unique
+  password String
+  type     UserType
+
+  participant Participant?
+  institution Institution?
+
+  created_at DateTime @default(now())
+  upadted_at DateTime @default(now()) @updatedAt
+}
+
+model Participant {
+  id        String   @id @default(cuid())
+  full_name String
+  cpf       String   @unique
+  birthday  DateTime
+
+  user    User   @relation(fields: [user_id], references: [id])
+  user_id String @unique
+
+  events Event[]
+
+  created_at DateTime @default(now())
+  upadted_at DateTime @default(now()) @updatedAt
+}
+
+model Institution {
+  id   String @id @default(cuid())
+  name String
+  cnpj String @unique
+
+  user    User   @relation(fields: [user_id], references: [id])
+  user_id String @unique
+
+  events Event[]
+
+  created_at DateTime @default(now())
+  upadted_at DateTime @default(now()) @updatedAt
+}
+
+model Event {
+  id          String   @id @default(cuid())
+  cover_img   String
+  name        String
+  description String
+  location    String
+  starts_at   DateTime
+  ends_at     DateTime
+
+  institution    Institution @relation(fields: [institution_id], references: [id])
+  institution_id String
+
+  participants Participant[]
+
+  created_at DateTime @default(now())
+  upadted_at DateTime @default(now()) @updatedAt
+}
+
+model EventScheduleItem {
+  id          String   @id @default(cuid())
+  description String
+  starts_at   DateTime
+  ends_at     DateTime
+
+  created_at DateTime @default(now())
+  upadted_at DateTime @default(now()) @updatedAt
+}

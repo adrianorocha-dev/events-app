@@ -1,0 +1,18 @@
+version: '3.9'
+services:
+  database:
+    image: postgres
+    container_name: event-emitter-db
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_DB=event_emitter
+      - POSTGRES_USER=event_emitter
+      - POSTGRES_PASSWORD=12345
+    volumes:
+      - evtemitter_data:/var/lib/postgresql/data
+
+volumes:
+  evtemitter_data:
+    driver: local

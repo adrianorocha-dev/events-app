@@ -7,7 +7,9 @@
     "dev": "tsnd --respawn --transpile-only --ignore-watch node_modules --exit-child src/main.ts"
   },
   "dependencies": {
-    "fastify": "^4.10.2"
+    "@prisma/client": "^4.6.1",
+    "fastify": "^4.10.2",
+    "prisma": "^4.6.1"
   },
   "devDependencies": {
     "@types/node": "^18.11.9",
