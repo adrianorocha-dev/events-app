@@ -6,6 +6,8 @@ export declare global {
       InstitutionSignUp: undefined;
       ManageEvents: undefined;
       CreateEvent: undefined;
+      EventsList: undefined;
+      EventDetails: { eventId: string };
     }
   }
 }

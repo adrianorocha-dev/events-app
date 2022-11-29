@@ -61,4 +61,22 @@ export const eventsRoutes = t.router({
 
       return events;
     }),
+  
+  listHighlighted: t.procedure
+    .query(async () => {
+      const events = await prisma.event.findMany({
+        orderBy: {
+          created_at: 'desc',
+        },
+        take: 5,
+      });
+
+      return events;
+    }),
+
+  listAll: t.procedure
+    .query(async () => {
+      const events = await prisma.event.findMany();
+      return events;
+    })
 })
