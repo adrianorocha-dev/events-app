@@ -17,7 +17,7 @@ export function EventsList() {
   const { data: allEvents = [] } = trpc.events.listAll.useQuery();
 
   function handleOpenEvent(eventId: string) {
-    navigation.navigate('EventDetails', { eventId })
+    navigation.navigate('DetailEvent', { eventId })
   }
 
   return (

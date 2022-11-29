@@ -8,6 +8,7 @@ import { ManageEvents } from '@screens/ManageEvents'
 import { CreateEvent } from '@screens/CreateEvent'
 import { trpc } from '@shared/services/trpc'
 import { EventsList } from '@screens/EventsList'
+import { DetailEvent } from '@screens/DetailEvent'
 
 const Stack = createNativeStackNavigator()
 
@@ -61,6 +62,11 @@ export function Routes() {
             <Stack.Screen
               name="EventsList"
               component={EventsList}
+            />
+
+            <Stack.Screen
+              name="DetailEvent"
+              component={DetailEvent}
             />
           </>
         )}

@@ -7,7 +7,7 @@ export declare global {
       ManageEvents: undefined;
       CreateEvent: undefined;
       EventsList: undefined;
-      EventDetails: { eventId: string };
+      DetailEvent: { eventId: string };
     }
   }
 }

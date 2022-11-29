@@ -1,7 +1,11 @@
+import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
+
 import { t } from '../../trpcInstance';
 import { isInstitution } from '../../middlewares/isInstitution';
 import { prisma } from '../../providers/prisma';
+
+import { EVENT_NOT_FOUND } from '../../lang/strings';
 
 export const eventsRoutes = t.router({
   create: t.procedure
@@ -46,7 +50,7 @@ export const eventsRoutes = t.router({
 
       return event;
     }),
-  
+
   list: t.procedure
     .use(isInstitution)
     .query(async ({ ctx }) => {
@@ -61,7 +65,7 @@ export const eventsRoutes = t.router({
 
       return events;
     }),
-  
+
   listHighlighted: t.procedure
     .query(async () => {
       const events = await prisma.event.findMany({
@@ -78,5 +82,27 @@ export const eventsRoutes = t.router({
     .query(async () => {
       const events = await prisma.event.findMany();
       return events;
+    }),
+
+  detail: t.procedure
+    .input(z.object({
+      id: z.string().cuid()
+    })).query(async ({ input }) => {
+      const { id } = input;
+
+      const event = await prisma.event.findUnique({
+        where: {
+          id,
+        },
+      });
+
+      if (!event) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: EVENT_NOT_FOUND,
+        });
+      }
+
+      return event;
     })
 })
