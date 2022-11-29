@@ -32,7 +32,6 @@ type FieldValues = z.infer<typeof formSchema>;
 export function Login() {
   const [loginType, setLoginType] = useState<LoginType>();
 
-
   useEffect(() => {
     function handleGoBack() {
       setLoginType(undefined);
@@ -51,14 +50,16 @@ export function Login() {
   });
 
   const navigation = useNavigation();
+  
+  const queryContext = trpc.useContext();
 
   const loginMutation = trpc.users.login.useMutation({
     onError(error) {
       Alert.alert('Erro', error.message);
     },
-    onSuccess({ token }) {
-      saveAuthToken(token);
-      navigation.navigate('ManageEvents');
+    async onSuccess({ token }) {
+      await saveAuthToken(token);
+      queryContext.users.me.invalidate();
     }
   });
 

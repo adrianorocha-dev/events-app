@@ -41,9 +41,24 @@ export const eventsRoutes = t.router({
               data: schedule ?? []
             }
           }
-        }
+        },
       });
 
       return event;
-    })
+    }),
+  
+  list: t.procedure
+    .use(isInstitution)
+    .query(async ({ ctx }) => {
+      const events = await prisma.event.findMany({
+        where: {
+          institution_id: ctx.institution.id,
+        },
+        orderBy: {
+          starts_at: 'asc'
+        }
+      });
+
+      return events;
+    }),
 })

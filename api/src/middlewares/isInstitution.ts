@@ -5,7 +5,6 @@ import { t } from '../trpcInstance';
 import { prisma } from '../providers/prisma';
 
 export const isInstitution = t.middleware(async ({ ctx, next }) => {
-  console.log(ctx.user)
   if (ctx.user?.type !== UserType.INSTITUTION) {
     throw new TRPCError({
       code: 'UNAUTHORIZED'

@@ -30,15 +30,19 @@ type FieldValues = z.infer<typeof formSchema>;
 
 export function CreateEvent() {
   const navigation = useNavigation();
+  
   const { control, handleSubmit, formState: { errors } } = useForm<FieldValues>({
     resolver: zodResolver(formSchema),
   });
+
+  const utils = trpc.useContext();
 
   const createEventMutation = trpc.events.create.useMutation({
     onError(error) {
       Alert.alert('Erro', error.message);
     },
     onSuccess() {
+      utils.events.invalidate();
       navigation.navigate('ManageEvents');
     }
   })

@@ -1,4 +1,4 @@
-import {NavigationContainer} from '@react-navigation/native'
+import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
 import { Login } from './screens/Login'
@@ -6,10 +6,15 @@ import { ParticipantSignUp } from './screens/ParticipantSignUp'
 import { InstitutionSignUp } from './screens/InstitutionSignUp'
 import { ManageEvents } from '@screens/ManageEvents'
 import { CreateEvent } from '@screens/CreateEvent'
+import { trpc } from '@shared/services/trpc'
 
 const Stack = createNativeStackNavigator()
 
 export function Routes() {
+  const { data: user, error } = trpc.users.me.useQuery(undefined, {
+    retry: false,
+  });
+
   return (
     <NavigationContainer>
       <Stack.Navigator
@@ -17,30 +22,43 @@ export function Routes() {
           headerShown: false
         }}
       >
-        <Stack.Screen
-          name="Login"
-          component={Login}
-        />
+        {(!user || error?.data?.code === 'UNAUTHORIZED') && (
+          <>
+            <Stack.Screen
+              name="Login"
+              component={Login}
+            />
+    
+            <Stack.Screen
+              name="ParticipantSignUp"
+              component={ParticipantSignUp}
+            />
+    
+            <Stack.Screen
+              name="InstitutionSignUp"
+              component={InstitutionSignUp}
+            />
+          </>
+        )}
 
-        <Stack.Screen
-          name="ParticipantSignUp"
-          component={ParticipantSignUp}
-        />
+        {user?.type === 'INSTITUTION' && (
+          <>
+            <Stack.Screen
+              name="ManageEvents"
+              component={ManageEvents}
+            />
 
-        <Stack.Screen
-          name="InstitutionSignUp"
-          component={InstitutionSignUp}
-        />
+            <Stack.Screen
+              name="CreateEvent"
+              component={CreateEvent}
+            />
+          </>
+        )}
 
-        <Stack.Screen
-          name="ManageEvents"
-          component={ManageEvents}
-        />
-
-        <Stack.Screen
-          name="CreateEvent"
-          component={CreateEvent}
-        />
+        {user?.type === 'PARTICIPANT' && (
+          <>
+          </>
+        )}
       </Stack.Navigator>
     </NavigationContainer>
   )

@@ -43,4 +43,15 @@ export const usersRoutes = t.router({
 
       return { token }
     }),
+  
+  me: t.procedure
+    .query(async ({ ctx }) => {
+      if (!ctx.user) {
+        throw new TRPCError({
+          code: 'UNAUTHORIZED'
+        });
+      }
+
+      return ctx.user;
+    })
 })
