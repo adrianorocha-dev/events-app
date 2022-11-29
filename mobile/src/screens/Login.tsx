@@ -1,19 +1,36 @@
 import { useEffect, useState } from 'react';
-import { BackHandler, TextInput, View } from 'react-native';
+import { Alert, BackHandler, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useNavigation } from '@react-navigation/native'
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+
+import { trpc } from '@shared/services/trpc';
+
+import { saveAuthToken } from '@shared/utils/saveAuthToken';
 
 import { BackButton } from './../shared/components/BackButton';
 import { Button, ButtonVariants } from "../shared/components/Button";
 import { Logo } from "../shared/components/Logo";
+import { FIELD_REQUIRED, INVALID_EMAIL_FORMAT } from '@shared/lang/strings';
+import { FormControlledInput } from '@shared/components/FormContolledInput';
 
 enum LoginType {
   PARTICIPANT = 'PARTICIPANT',
   INSTITUTION = 'INSTITUTION',
 }
 
+const formSchema = z.object({
+  email: z.string({ required_error: FIELD_REQUIRED }).email(INVALID_EMAIL_FORMAT),
+  password: z.string({ required_error: FIELD_REQUIRED }).min(1, FIELD_REQUIRED),
+});
+
+type FieldValues = z.infer<typeof formSchema>;
+
 export function Login() {
   const [loginType, setLoginType] = useState<LoginType>();
+
 
   useEffect(() => {
     function handleGoBack() {
@@ -28,13 +45,34 @@ export function Login() {
     }
   }, []);
 
+  const { control, handleSubmit, formState: { errors } } = useForm<FieldValues>({
+    resolver: zodResolver(formSchema)
+  });
+
   const navigation = useNavigation();
+
+  const loginMutation = trpc.users.login.useMutation({
+    onError(error) {
+      Alert.alert('Erro', error.message);
+    },
+    onSuccess({ token }) {
+      saveAuthToken(token);
+      console.log({ token })
+      // navigation.navigate('')
+    }
+  });
+
+  const onSubmit: SubmitHandler<FieldValues> = ({ email, password }) => {
+    loginMutation.mutate({
+      email,
+      password,
+    });
+  }
 
   function handleGoToSignUp() {
     if (!loginType) {
       return
     }
-
 
     const signUpPages: Record<LoginType, keyof ReactNavigation.RootParamList> = {
       [LoginType.PARTICIPANT]: 'ParticipantSignUp',
@@ -71,20 +109,29 @@ export function Login() {
             <BackButton onPress={() => setLoginType(undefined)} />
 
             <View className="mt-7">
-              <TextInput
+              <FormControlledInput
+                control={control}
+                name="email"
                 className="mt-2 bg-white px-3 py-2 rounded-md border border-zinc-500 focus:border-purple-600 text-lg"
                 placeholder="Email"
+                textContentType="emailAddress"
+                keyboardType="email-address"
               />
 
-              <TextInput
+              <FormControlledInput
+                control={control}
+                name="password"
                 className="mt-2 bg-white px-3 py-2 rounded-md border border-zinc-500 focus:border-purple-600 text-lg"
                 placeholder="Senha"
                 secureTextEntry
+                textContentType="password"
               />
 
               <View className="mt-3">
                 <Button
                   text="Login"
+                  onPress={handleSubmit(onSubmit)}
+                  isLoading={loginMutation.isLoading}
                 />
               </View>
 

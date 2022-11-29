@@ -1,8 +1,13 @@
+import { UserType } from '@prisma/client';
+import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+
 import { t } from '../../trpcInstance';
 import { prisma } from '../../providers/prisma';
-import { UserType } from '@prisma/client';
+
+import { EMAIL_NOT_FOUND, INVALID_PASSWORD } from '../../lang/strings';
 
 export const participantsRoutes = t.router({
   create: t.procedure
@@ -39,5 +44,5 @@ export const participantsRoutes = t.router({
       });
       
       return user;
-    })
+    }),
 })
