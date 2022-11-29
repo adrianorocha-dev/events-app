@@ -1,6 +1,7 @@
-import { Control, Controller, FieldValues, Path } from "react-hook-form"
-import { TextInputProps } from "react-native";
-import { Text, TextInput, View } from "react-native";
+import { Control, Controller, FieldValues, Path } from 'react-hook-form'
+import { TextInputProps } from 'react-native';
+import { Text, TextInput, View } from 'react-native';
+import colors from 'tailwindcss/colors';
 
 interface FormControlledInputProps<T extends FieldValues> extends TextInputProps {
   control: Control<T, any>;
@@ -20,6 +21,8 @@ export function FormControlledInput<T extends FieldValues>({ control, name, fiel
             value={value}
             onChangeText={onChange}
             onBlur={onBlur}
+            cursorColor={colors.purple[600]}
+            selectionColor={colors.purple[400] + '55'}
             {...props}
           />
         }

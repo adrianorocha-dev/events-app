@@ -13,3 +13,5 @@ export const INVALID_CNPJ_FORMAT = 'O formato do CNPJ está inválido';
 export const INVALID_CPF_FORMAT = 'O formato do CPF está inválido';
 
 export const DATE_FORMAT_INVALID = 'O formato da data está inválido';
+
+export const TIME_FORMAT_INVALID = 'O formato da hora está inválido';

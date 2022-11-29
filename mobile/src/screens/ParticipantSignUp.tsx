@@ -3,19 +3,19 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useNavigation } from '@react-navigation/native'
+import { z } from 'zod';
 
 import { Logo } from '../shared/components/Logo';
 import { Button } from '../shared/components/Button';
 import { DatePicker } from '../shared/components/DatePicker';
 import { BackButton } from '../shared/components/BackButton';
-import { z } from 'zod';
+import { FormControlledInput } from '@shared/components/FormControlledInput';
+import { FormControlledMaskedInput } from '@shared/components/FormControlledMaskedInput';
 
 import { trpc } from '@shared/services/trpc';
 
 import { DATE_FORMAT_INVALID, FIELD_REQUIRED, INVALID_CPF_FORMAT, INVALID_EMAIL_FORMAT, PASSWORDS_DO_NOT_MATCH, PASSWORD_TOO_SHORT } from '@shared/lang/strings';
 
-import { FormControlledInput } from '@shared/components/FormContolledInput';
-import { FormControlledMaskedInput } from '@shared/components/FormContolledMaskedInput';
 
 const formSchema = z.object({
   email: z.string({ required_error: FIELD_REQUIRED }).email(INVALID_EMAIL_FORMAT),

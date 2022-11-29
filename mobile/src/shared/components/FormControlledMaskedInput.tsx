@@ -3,6 +3,7 @@ import { Control, Controller, FieldValues, Path } from 'react-hook-form'
 import { TextInputProps } from 'react-native';
 import { Text, View } from 'react-native';
 import { MaskedTextInput } from 'react-native-mask-text';
+import colors from 'tailwindcss/colors';
 
 interface FormControlledInputProps<T extends FieldValues> extends TextInputProps {
   control: Control<T, any>;
@@ -37,6 +38,8 @@ export function FormControlledMaskedInput<T extends FieldValues>({ control, name
               lineHeight: 28,
               borderColor: isFocused ? 'rgb(147, 51, 234)' : fieldError ? 'rgb(220, 38, 38)' : 'rgb(113, 113, 122)'
             }}
+            cursorColor={colors.purple[600]}
+            selectionColor={colors.purple[400] + '55'}
             {...props}
           />
         }

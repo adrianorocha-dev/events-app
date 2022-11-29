@@ -29,7 +29,7 @@ export const usersRoutes = t.router({
 
       const passwordsMatch = await bcrypt.compare(input.password, user.password);
 
-      if (passwordsMatch) {
+      if (!passwordsMatch) {
         throw new TRPCError({
           code: 'UNAUTHORIZED',
           message: INVALID_PASSWORD,

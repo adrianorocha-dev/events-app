@@ -13,8 +13,9 @@ import { saveAuthToken } from '@shared/utils/saveAuthToken';
 import { BackButton } from './../shared/components/BackButton';
 import { Button, ButtonVariants } from "../shared/components/Button";
 import { Logo } from "../shared/components/Logo";
+import { FormControlledInput } from '@shared/components/FormControlledInput';
+
 import { FIELD_REQUIRED, INVALID_EMAIL_FORMAT } from '@shared/lang/strings';
-import { FormControlledInput } from '@shared/components/FormContolledInput';
 
 enum LoginType {
   PARTICIPANT = 'PARTICIPANT',
@@ -57,8 +58,7 @@ export function Login() {
     },
     onSuccess({ token }) {
       saveAuthToken(token);
-      console.log({ token })
-      // navigation.navigate('')
+      navigation.navigate('ManageEvents');
     }
   });
 

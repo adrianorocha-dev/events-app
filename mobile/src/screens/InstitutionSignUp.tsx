@@ -12,8 +12,8 @@ import { FIELD_REQUIRED, INSTITUTION_NAME_REQUIRED, INVALID_CNPJ_FORMAT, INVALID
 import { Logo } from '../shared/components/Logo';
 import { Button } from '../shared/components/Button';
 import { BackButton } from '../shared/components/BackButton';
-import { FormControlledInput } from '@shared/components/FormContolledInput';
-import { FormControlledMaskedInput } from '@shared/components/FormContolledMaskedInput';
+import { FormControlledInput } from '@shared/components/FormControlledInput';
+import { FormControlledMaskedInput } from '@shared/components/FormControlledMaskedInput';
 
 const formSchema = z.object({
   email: z.string({ required_error: FIELD_REQUIRED }).email(INVALID_EMAIL_FORMAT),

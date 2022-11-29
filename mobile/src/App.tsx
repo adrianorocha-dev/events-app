@@ -18,7 +18,7 @@ export function App() {
         url: 'http://192.168.1.12:3333/trpc',
         async headers() {
           return {
-            Authorization: await getAuthToken()
+            Authorization: `Bearer ${await getAuthToken()}`
           }
         }
       })
@@ -28,7 +28,7 @@ export function App() {
   return (
     <trpc.Provider client={trpcClient} queryClient={queryClient}>
       <QueryClientProvider client={queryClient}>
-        <StatusBar style="auto" />
+        <StatusBar style="dark" />
         <Routes />
       </QueryClientProvider>
     </trpc.Provider>

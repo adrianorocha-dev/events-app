@@ -61,13 +61,15 @@ model Event {
   id          String   @id @default(cuid())
   cover_img   String
   name        String
-  description String
+  description String?
   location    String
   starts_at   DateTime
   ends_at     DateTime
 
   institution    Institution @relation(fields: [institution_id], references: [id])
   institution_id String
+
+  schedule EventScheduleItem[]
 
   participants Participant[]
 
@@ -80,6 +82,9 @@ model EventScheduleItem {
   description String
   starts_at   DateTime
   ends_at     DateTime
+
+  event    Event  @relation(fields: [event_id], references: [id])
+  event_id String @map("eventId")
 
   created_at DateTime @default(now())
   upadted_at DateTime @default(now()) @updatedAt

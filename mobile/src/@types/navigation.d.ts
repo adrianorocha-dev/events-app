@@ -4,6 +4,8 @@ export declare global {
       Login: undefined;
       ParticipantSignUp: undefined;
       InstitutionSignUp: undefined;
+      ManageEvents: undefined;
+      CreateEvent: undefined;
     }
   }
 }
